@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Area Calculation with LatLon</title>
+    <script src="https://cdn.jsdelivr.net/npm/geodesy@2.2.0/latlon-spherical.min.js"></script>
+    <script>
+        function calculateArea() {
+            // Get user inputs
+            const lat1 = parseFloat(document.getElementById("lat1").value);
+            const lon1 = parseFloat(document.getElementById("lon1").value);
+            const lat2 = parseFloat(document.getElementById("lat2").value);
+            const lon2 = parseFloat(document.getElementById("lon2").value);
+
+            // Create LatLon objects
+            const point1 = new LatLon(lat1, lon1);
+            const point2 = new LatLon(lat2, lon2);
+            const origin = new LatLon(0, 0); // Fixed point (0,0)
+
+            // Calculate distances
+            const d1 = point1.distanceTo(origin);
+            const d2 = point2.distanceTo(origin);
+            const d3 = point1.distanceTo(point2);
+
+            // Using Heron's formula to calculate area of triangle
+            const s = (d1 + d2 + d3) / 2; // semi-perimeter
+            const area = Math.sqrt(s * (s - d1) * (s - d2) * (s - d3)); // area
+
+            // Display the result
+            document.getElementById("result").innerText = `Area: ${area.toFixed(2)} square meters`;
+        }
+    </script>
+</head>
+<body>
+
+
+<h1>Calculate Area from Coordinates</h1>
+<label for="lat1">Latitude 1:</label>
+<input type="text" id="lat1" placeholder="Enter latitude 1"><br>
+<label for="lon1">Longitude 1:</label>
+<input type="text" id="lon1" placeholder="Enter longitude 1"><br>
+<label for="lat2">Latitude 2:</label>
+<input type="text" id="lat2" placeholder="Enter latitude 2"><br>
+<label for="lon2">Longitude 2:</label>
+<input type="text" id="lon2" placeholder="Enter longitude 2"><br>
+<button onclick="calculateArea()">Submit</button>
+
+<p id="result"></p>
+
+</body>
+</html>
